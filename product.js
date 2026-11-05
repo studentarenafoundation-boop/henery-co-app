@@ -1,5 +1,8 @@
-import { initializeApp, getApps, getApp }
-from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import {
+  initializeApp,
+  getApps,
+  getApp
+} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 
 import {
   getFirestore,
@@ -7,31 +10,28 @@ import {
   getDocs,
   query,
   where
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 
-// Replace with your Firebase configuration
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
+import { firebaseConfig } from "./firebase-config.js";
 
+// Reuse the existing Firebase app
 const app = getApps().length
   ? getApp()
   : initializeApp(firebaseConfig);
 
+// Connect Firestore
 const db = getFirestore(app);
 
-// Load products from Firestore
+// Load active gemstone products
 async function loadProducts() {
   const container = document.getElementById("products-container");
 
-  if (!container) return;
+  if (!container) {
+    console.error("Products container not found in index.html");
+    return;
+  }
 
-  container.textContent = "Loading products...";
+  container.textContent = "Loading gemstones...";
 
   try {
     const productsQuery = query(
@@ -44,32 +44,44 @@ async function loadProducts() {
     container.replaceChildren();
 
     if (snapshot.empty) {
-      container.textContent = "No products available.";
+      container.textContent = "No gemstones available yet.";
       return;
     }
 
-    snapshot.forEach((doc) => {
-      const product = doc.data();
+    snapshot.forEach((document) => {
+      const product = document.data();
 
-      const card = document.createElement("div");
+      const card = document.createElement("article");
       card.className = "product-card";
+
+      if (product.image) {
+        const img = document.createElement("img");
+        img.src = product.image;
+        img.alt = product.name || "Gemstone";
+        img.loading = "lazy";
+        card.appendChild(img);
+      }
 
       const name = document.createElement("h3");
       name.textContent = product.name || "Gemstone";
 
       const price = document.createElement("p");
-      price.textContent = "₹" + (product.price || 0);
+      price.textContent = "₹" + Number(product.price || 0).toLocaleString("en-IN");
+
+      const category = document.createElement("p");
+      category.textContent = product.category || "";
 
       const description = document.createElement("p");
       description.textContent = product.description || "";
 
-      card.append(name, price, description);
+      card.append(name, price, category, description);
       container.appendChild(card);
     });
 
   } catch (error) {
     console.error("Firestore error:", error);
-    container.textContent = "Unable to load products.";
+    container.textContent =
+      "Unable to load gemstones. Please try again later.";
   }
 }
 
