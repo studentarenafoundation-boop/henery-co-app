@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#34236b"><title>Henery & Co. — Welcome</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="shell">
+  <div class="logo">H</div>
+  <p class="brand">Henery <span>&</span> Co.</p>
+  <p class="tagline">Language brings us together</p>
+  <section class="card">
+    <div id="signedOut">
+      <h1>Welcome to your world.</h1>
+      <p class="sub">Meet native speakers. Learn languages. Make friends.</p>
+      <div class="tabs"><button class="tab active" data-tab="signup">Create account</button><button class="tab" data-tab="login">Sign in</button></div>
+      <form id="emailForm">
+        <label for="name" id="nameLabel">Your name</label><input id="name" autocomplete="name" placeholder="Your display name">
+        <label for="email">Email address</label><input id="email" type="email" required autocomplete="email" placeholder="you@example.com">
+        <label for="password">Password</label><input id="password" type="password" required minlength="6" autocomplete="new-password" placeholder="At least 6 characters">
+        <button class="primary" id="emailSubmit" type="submit">Create account</button>
+      </form>
+      <div class="or"><span>or continue with</span></div>
+      <button class="secondary" id="googleBtn"><b class="google">G</b> Continue with Google</button>
+      <div class="divider"></div>
+      <h2>Continue with phone</h2>
+      <p class="tiny">Phone verification uses an SMS code. For zero-cost testing, configure a Firebase test phone number.</p>
+      <label for="phone">Phone number with country code</label><input id="phone" type="tel" autocomplete="tel" placeholder="+91 9876543210">
+      <div id="recaptcha-container"></div>
+      <button class="secondary" id="sendCodeBtn" type="button">Send verification code</button>
+      <div id="otpArea" hidden><label for="otp">6-digit verification code</label><input id="otp" inputmode="numeric" autocomplete="one-time-code" placeholder="123456"><button class="primary" id="verifyCodeBtn" type="button">Verify and continue</button></div>
+      <p class="legal">By continuing, you agree to use Henery & Co. respectfully and safely.</p>
+    </div>
+    <div id="signedIn" hidden>
+      <div class="success-mark">✓</div><h1>You're signed in!</h1>
+      <p class="sub" id="userDetails"></p>
+      <p class="tiny">Authentication is connected. Your next step is setting up your language-learning profile.</p>
+      <button class="primary" id="signOutBtn">Sign out</button>
+    </div>
+    <p id="message" class="message" role="status"></p>
+  </section>
+  <p class="footer">HENERY & CO. · CONNECT GLOBALLY</p>
+</main>
+<script type="module" src="app.js"></script>
+</body></html>
